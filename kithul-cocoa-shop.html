@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kithul and Cocoa - Shop</title>
+    <style>
+        :root {
+            --primary-color: #3a6351;
+            --secondary-color: #d2691e;
+            --accent-color: #f8d19c;
+            --text-color: #4a3728;
+            --light-bg: #fdf6e9;
+            --dark-bg: #2d3e40;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-style: italic;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        nav {
+            background-color: var(--dark-bg);
+            padding: 0.8rem;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+        }
+        
+        nav ul li {
+            margin: 0 1rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+        
+        .hero {
+            background-image: url('images/WhatsApp Image 2025-05-16 at 23.20.53.jpeg');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 0.5rem;
+        }
+        
+        .btn:hover {
+            background-color: #b85c1e;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        section {
+            padding: 4rem 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            color: var(--secondary-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .product-img {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .product-desc {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        
+        .category-btn {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .category-btn.active, .category-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .info-section {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .info-card {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .info-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .about-section {
+            background-color: white;
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .about-img {
+            height: 400px;
+            background-image: url('images/1595518944-kithul-toddy-tapping.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+        }
+        
+        footer {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .footer-heading {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .footer-links a {
+            display: block;
+            color: #ccc;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .social-icon {
+            background-color: white;
+            color: var(--dark-bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 0.5rem;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">KITHUL AND COCOA</div>
+        <div class="tagline">A World of Flavours, A Taste of Home</div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#location">Location</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Sri Lankan Fusion • Tropical & Modern</h1>
+            <p>Handcrafted products that celebrate Sri Lankan flavors and traditions with a global twist</p>
+            <div>
+                <a href="#shop" class="btn">Shop Now</a>
+                <a href="#about" class="btn btn-secondary">Our Story</a>
+            </div>
+        </div>
+    </section>
+    
+    <section id="shop">
+        <div class="container">
+            <h2 class="section-title">Shop Our Collection</h2>
+            <p class="section-subtitle">Taste of Sri Lanka, Delivered to Your Door</p>
+            
+            <div class="categories">
+                <button class="category-btn active">All</button>
+                <button class="category-btn">Spice Blends</button>
+                <button class="category-btn">Drinks</button>
+                <button class="category-btn">Pantry</button>
+                <button class="category-btn">Merch</button>
+            </div>
+            
+            <div class="shop-grid">
+                <div class="product-card">
+                    <div class="product-img" style="background-image: url('images/84TLrmNXJFc4FaVF_cover.jpg')"></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Kithul Treacle</h3>
+                        <p class="product-desc">Pure, hand-harvested kithul palm syrup with rich caramel notes. Perfect for hoppers, desserts, or cocktails.</p>
+                        <p class="product-price">$15.99</p>
+                        <a href="#" class="btn btn-secondary">Add to Cart</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-img" style="background-image: url('images/Quick-Easy-Sri-Lankan-Curry-Powder-Recipe-Ready-to-Use.jpg')"></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Sri Lankan Curry Blend</h3>
+                        <p class="product-desc">Our signature spice blend combining cinnamon, cardamom, cloves, and more for authentic Sri Lankan curries.</p>
+                        <p class="product-price">$12.99</p>
+                        <a href="#" class="btn btn-secondary">Add to Cart</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-img" style="background-image: url('images/5-Creative-Cocktails-with-Sri-Lankan-Arrack-f-685x336.webp')"></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Coconut Arrack Cocktail Mix</h3>
+                        <p class="product-desc">Just add spirit for an instant tropical cocktail with authentic Sri Lankan arrack notes.</p>
+                        <p class="product-price">$18.99</p>
+                        <a href="#" class="btn btn-secondary">Add to Cart</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-img" style="background-image: url('images/download.jpeg')"></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ceylon Cinnamon Sticks</h3>
+                        <p class="product-desc">Premium Ceylon cinnamon sticks with delicate, complex flavor. The true cinnamon of Sri Lanka.</p>
+                        <p class="product-price">$9.99</p>
+                        <a href="#" class="btn btn-secondary">Add to Cart</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-img" style="background-image: url('images/91qB8+oNSkL._AC_SX569_.jpg')"></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Kithul and Cocoa T-Shirt</h3>
+                        <p class="product-desc">100% organic cotton t-shirt featuring our signature palm tree logo. Available in multiple colors.</p>
+                        <p class="product-price">$24.99</p>
+                        <a href="#" class="btn btn-secondary">Add to Cart</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-img" style="background-image: url('images/Multicolored_Shimmery_Upcycled_Handwoven_Designer_Beach_Bag_BBD1124-001_PS_W.webp')"></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Handwoven Market Bag</h3>
+                        <p class="product-desc">Traditional Sri Lankan handwoven bag made from sustainable materials. Perfect for the beach or market.</p>
+                        <p class="product-price">$29.99</p>
+                        <a href="#" class="btn btn-secondary">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="info-section">
+        <div class="container">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">🌿</div>
+                    <h3>Sustainable</h3>
+                    <p>All our products are ethically sourced and packaged with eco-friendly materials</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">🌴</div>
+                    <h3>Authentic</h3>
+                    <p>Recipes and techniques passed down through generations with a modern twist</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">🤝</div>
+                    <h3>Community</h3>
+                    <p>We work directly with local farmers and artisans in Sri Lanka</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2 class="section-title">Our Story</h2>
+            <p class="section-subtitle">More Than Just a Café</p>
+            
+            <div class="about-grid">
+                <div class="about-img"></div>
+                <div>
+                    <p>Kithul and Cocoa is not just about food — it's about experience. Our café will serve up bold, island-inspired meals alongside immersive community events and eco-conscious retail.</p>
+                    <p>Rooted in the bold, vibrant flavors of Sri Lanka and inspired by global culinary traditions, we're creating a space where fresh ideas meet soulful ingredients — served beachside.</p>
+                    <p>From smoky island spices to handcrafted tropical cocktails, every dish will be a celebration of local roots and worldwide inspiration.</p>
+                    <p>Our journey began with a passion for Sri Lankan cuisine and a vision to share these flavors globally. Now, we're excited to bring our carefully crafted products directly to your home.</p>
+                    <a href="#shop" class="btn">Shop Our Products</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="location">
+        <div class="container">
+            <h2 class="section-title">Visit Us</h2>
+            <p class="section-subtitle">Opening Early 2026 in Hiriketiya</p>
+            
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <p>Kithul and Cocoa will be located just steps from the surf at Hiriketiya Beach, Dikwella — a coastal gem loved by foodies, surfers, and travelers alike.</p>
+                <p>Our physical shop and café will offer the full Kithul and Cocoa experience, with seasonal menu items, special events, and an expanded range of products.</p>
+                <p>Can't wait until then? Shop our online collection or follow our journey on Instagram.</p>
+                <div style="margin-top: 2rem;">
+                    <a href="#shop" class="btn">Shop Online</a>
+                    <a href="https://instagram.com/kithulandcocoa" class="btn btn-secondary">Follow Our Journey</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-heading">Kithul and Cocoa</h3>
+                    <p>A World of Flavours, A Taste of Home</p>
+                    <p>Opening Early 2026 | Hiriketiya, Sri Lanka</p>
+                    <p>Currently shipping worldwide from our online shop</p>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Shop</h3>
+                    <div class="footer-links">
+                        <a href="#">Spice Blends</a>
+                        <a href="#">Pantry Items</a>
+                        <a href="#">Drinks & Mixes</a>
+                        <a href="#">Merchandise</a>
+                        <a href="#">Gift Sets</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Info</h3>
+                    <div class="footer-links">
+                        <a href="#">About Us</a>
+                        <a href="#">Shipping & Returns</a>
+                        <a href="#">FAQs</a>
+                        <a href="#">Our Sustainability</a>
+                        <a href="#">Privacy Policy</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Contact</h3>
+                    <p>Email: kithulandcocoa@gmail.com</p>
+                    <p>WhatsApp: +94 783546210</p>
+                    <p>Got a question, idea, or collaboration in mind? Reach out.</p>
+                    
+                    <div>
+                        <h4 style="margin-top: 1.5rem; color: var(--accent-color);">Newsletter</h4>
+                        <p>Sign up to be the first to know about product launches and café updates.</p>
+                        <form style="margin-top: 1rem;">
+                            <input type="email" placeholder="Your email" style="padding: 0.6rem; width: 100%; margin-bottom: 0.5rem; border-radius: 4px; border: none;">
+                            <button type="submit" class="btn" style="width: 100%;">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="social-links">
+                <a href="#" class="social-icon">📱</a>
+                <a href="#" class="social-icon">📷</a>
+                <a href="#" class="social-icon">📘</a>
+                <a href="#" class="social-icon">▶️</a>
+            </div>
+            
+            <div class="copyright">
+                © 2025 Kithul and Cocoa. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
